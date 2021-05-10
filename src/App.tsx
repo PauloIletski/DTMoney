@@ -4,6 +4,8 @@ import { Dashboard } from './components/Dashboard/Index';
 import { Header } from './components/Header';
 import { GlobalStyle } from './styles/global';
 import Modal from 'react-modal';
+import { NewTransactionModal } from './components/NewTransactionModal';
+import { TransactionsProvider } from './TransactionsContext';
 
 Modal.setAppElement('#root')
 
@@ -20,22 +22,16 @@ export function App() {
       setIsNewTransactionModalOpen(false);
   }
   
-
-
-  useEffect(() =>{
-    fetch('http://localhost:3000/api/transactions')
-    .then(response =>response.json)
-    .then(data =>console.log(data))
-  },[])
   return (
-    <>
+    <TransactionsProvider>
       <Header onOpenNewTrasactionModal={handleOpenNewTransactionModal}/>
       <Dashboard/>
-      <Modal isOpen={isNewTransactionModalOpen} onRequestClose={handleCloseNewTransactionModal}>
-                        <h1>Cadastro</h1>
-                </Modal>
+      <NewTransactionModal 
+      isOpen={isNewTransactionModalOpen}
+      onRequestClose={handleCloseNewTransactionModal}
+      />
       <GlobalStyle/>
-    </>
+    </TransactionsProvider>
   );
 }
 
